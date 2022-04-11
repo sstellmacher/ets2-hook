@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31613.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETSHookTest", "ETSHookTest\ETSHookTest.csproj", "{012F1037-9A63-4162-BA55-BF3BE28EBBD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ets2SdkClient", "ets2-sdk-plugin\ets2-client\C#\Ets2SdkClient\Ets2SdkClient.csproj", "{21FB58CD-0B97-409F-AE61-CF8964E13F63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ets2Client.Console", "Ets2Client.Console\Ets2Client.Console.csproj", "{29ABBCB2-1DA7-4229-9F9B-809DF1787A04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ets2Client", "Ets2Client\Ets2Client.csproj", "{45F3B2AF-630D-40A1-82A3-A1ACCE472362}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{012F1037-9A63-4162-BA55-BF3BE28EBBD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{012F1037-9A63-4162-BA55-BF3BE28EBBD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{012F1037-9A63-4162-BA55-BF3BE28EBBD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{012F1037-9A63-4162-BA55-BF3BE28EBBD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21FB58CD-0B97-409F-AE61-CF8964E13F63}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21FB58CD-0B97-409F-AE61-CF8964E13F63}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21FB58CD-0B97-409F-AE61-CF8964E13F63}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21FB58CD-0B97-409F-AE61-CF8964E13F63}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29ABBCB2-1DA7-4229-9F9B-809DF1787A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29ABBCB2-1DA7-4229-9F9B-809DF1787A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29ABBCB2-1DA7-4229-9F9B-809DF1787A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29ABBCB2-1DA7-4229-9F9B-809DF1787A04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45F3B2AF-630D-40A1-82A3-A1ACCE472362}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45F3B2AF-630D-40A1-82A3-A1ACCE472362}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45F3B2AF-630D-40A1-82A3-A1ACCE472362}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45F3B2AF-630D-40A1-82A3-A1ACCE472362}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

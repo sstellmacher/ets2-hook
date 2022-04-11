@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ets2-sdk-plugin\ets2-client\C#\Ets2SdkClient\Ets2SdkClient.csproj" />
+  </ItemGroup>
+
+</Project>
