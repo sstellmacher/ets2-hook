@@ -1,4 +1,6 @@
 ﻿using Ets2Client.Telemetry;
+using Ets2Client.Telemetry.Defaults;
+using Ets2Client.Telemetry.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,6 +34,7 @@ namespace Ets2Client.Console
                     loggingBuilder.AddNLog();
                 })
                 .AddTransient<IEts2TelemetryProvider, DefaultEts2TelemetryProvider>()
-                .AddHostedService<Ets2ConsoleTelemetryClient>());
+                .AddTransient<IEts2TelemetryApiClient, DefaultEts2TelemetryWebClient>()
+                .AddHostedService<Ets2ConsoleTelemetryWorker>());
     }
 }
