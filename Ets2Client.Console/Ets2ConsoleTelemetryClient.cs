@@ -16,22 +16,27 @@ namespace Ets2Client.Console
     {
         private readonly ILogger<Ets2ConsoleTelemetryClient> logger;
         private readonly IEts2TelemetryProvider provider;
-        private readonly IConfiguration config;
+
+        private readonly int workerInterval;
+        private readonly string apiKey;
+        private readonly string apiUrl;
 
         public Ets2ConsoleTelemetryClient(IConfiguration config, IEts2TelemetryProvider provider, ILogger<Ets2ConsoleTelemetryClient> logger)
         {
-            this.config = config;
             this.provider = provider;
             this.logger = logger;
+
+            apiUrl = config.GetSection("API").GetValue<string>("URL");
+            apiKey = config.GetSection("API").GetValue<string>("Key");
+            workerInterval = config.GetSection("Worker").GetValue<int>("Interval");
         }
 
         public async Task SendData(Ets2Telemetry data)
         {
-            var apiConfig = config.GetSection("Api");
-            var request = WebRequest.Create(apiConfig.GetValue<string>("URL"));
+            var request = WebRequest.Create(apiUrl);
             request.ContentType = "application/json";
             request.Method = "POST";
-            request.Headers["Authorization"] = "Bearer " + apiConfig.GetValue<string>("Key");
+            request.Headers["Authorization"] = "Bearer " + apiKey;
 
             using (var streamWriter = new StreamWriter(request.GetRequestStream()))
             {
@@ -55,13 +60,16 @@ namespace Ets2Client.Console
                 try
                 {
                     logger.LogInformation("Reading Telemetry Data.");
+
                     var data = await provider.GetTelemetryInfoAsync();
                     
                     logger.LogInformation("Sending Telemetry Data.");
+
                     await SendData(data);
+
                     logger.LogInformation("Telemetry Data Send.");
 
-                    await Task.Delay(2000); // todo
+                    await Task.Delay(workerInterval);
                 }
                 catch (Exception ex)
                 {
