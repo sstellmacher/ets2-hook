@@ -6,7 +6,7 @@ namespace Ets2Client.Telemetry.Defaults
 {
     public class DefaultEts2TelemetryProvider : IEts2TelemetryProvider
     {
-        private readonly Data.SharedMemory sharedMemory = new();
+        private readonly SharedMemory sharedMemory = new();
         private readonly ILogger<DefaultEts2TelemetryProvider> logger;
 
         public DefaultEts2TelemetryProvider(ILogger<DefaultEts2TelemetryProvider> logger)
@@ -22,7 +22,7 @@ namespace Ets2Client.Telemetry.Defaults
         public Ets2Telemetry GetTelemetry()
         {
             if (!sharedMemory.Connected)
-                throw new InvalidOperationException(nameof(Data.SharedMemory) + " not connected.");
+                throw new InvalidOperationException(nameof(SharedMemory) + " not connected.");
 
             var rawData = sharedMemory.ReadRawData();
             var etsRaw = sharedMemory.ToObject<Ets2TelemetryData>(rawData);
