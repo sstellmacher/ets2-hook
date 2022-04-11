@@ -20,6 +20,7 @@ namespace Ets2Client.Console
         private readonly int workerInterval;
         private readonly string apiKey;
         private readonly string apiUrl;
+        private readonly string memoryMapName;
 
         public Ets2ConsoleTelemetryClient(IConfiguration config, IEts2TelemetryProvider provider, ILogger<Ets2ConsoleTelemetryClient> logger)
         {
@@ -29,6 +30,7 @@ namespace Ets2Client.Console
             apiUrl = config.GetSection("API").GetValue<string>("URL");
             apiKey = config.GetSection("API").GetValue<string>("Key");
             workerInterval = config.GetSection("Worker").GetValue<int>("Interval");
+            memoryMapName = config.GetSection("TelemetrySdk").GetValue<string>("MemoryMapName");
         }
 
         public async Task SendData(Ets2Telemetry data)
@@ -55,13 +57,21 @@ namespace Ets2Client.Console
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            logger.LogInformation("Connecting to memory...");
+            while (!provider.Connect(memoryMapName))
+            {
+                await Task.Delay(workerInterval, stoppingToken);
+            }
+
+            logger.LogInformation("Memory connected.");
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 try
                 {
                     logger.LogInformation("Reading Telemetry Data.");
 
-                    var data = await provider.GetTelemetryInfoAsync();
+                    var data = provider.GetTelemetry();
                     
                     logger.LogInformation("Sending Telemetry Data.");
 
@@ -69,7 +79,7 @@ namespace Ets2Client.Console
 
                     logger.LogInformation("Telemetry Data Send.");
 
-                    await Task.Delay(workerInterval);
+                    await Task.Delay(workerInterval, stoppingToken);
                 }
                 catch (Exception ex)
                 {
