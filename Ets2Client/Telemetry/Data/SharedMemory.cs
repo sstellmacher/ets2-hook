@@ -2,7 +2,7 @@
 using System.IO.MemoryMappedFiles;
 using System.Runtime.InteropServices;
 
-namespace Ets2Client.Telemetry
+namespace Ets2Client.Telemetry.Data
 {
     class SharedMemory
     {
