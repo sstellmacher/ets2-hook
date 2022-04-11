@@ -1,0 +1,3 @@
+[submodule "ets2-sdk-plugin"]
+	path = ets2-sdk-plugin
+	url = https://github.com/nlhans/ets2-sdk-plugin
