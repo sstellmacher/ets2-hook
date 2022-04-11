@@ -1,5 +1,5 @@
-﻿using Ets2Client.Telemetry.Web;
-using Ets2SdkClient;
+﻿using Ets2Client.Telemetry.Data;
+using Ets2Client.Telemetry.Web;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.IO;

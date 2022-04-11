@@ -1,5 +1,4 @@
 ﻿using Ets2Client.Telemetry.Data;
-using Ets2SdkClient;
 using Microsoft.Extensions.Logging;
 using System;
 

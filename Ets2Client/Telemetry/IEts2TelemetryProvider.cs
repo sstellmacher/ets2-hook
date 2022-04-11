@@ -1,4 +1,4 @@
-﻿using Ets2SdkClient;
+﻿using Ets2Client.Telemetry.Data;
 
 namespace Ets2Client.Telemetry
 {

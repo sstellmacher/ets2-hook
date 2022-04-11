@@ -9,8 +9,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ets2-sdk-plugin\ets2-client\C#\Ets2SdkClient\Ets2SdkClient.csproj" />
-  </ItemGroup>
-
 </Project>
