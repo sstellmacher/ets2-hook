@@ -1,58 +1,34 @@
 ﻿using Ets2Client.Telemetry;
-using Ets2SdkClient;
+using Ets2Client.Telemetry.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ets2Client.Console
 {
-    class Ets2ConsoleTelemetryClient : BackgroundService, IEts2TelemetryClient
+    class Ets2ConsoleTelemetryWorker : BackgroundService
     {
-        private readonly ILogger<Ets2ConsoleTelemetryClient> logger;
+        private readonly ILogger<Ets2ConsoleTelemetryWorker> logger;
         private readonly IEts2TelemetryProvider provider;
+        private readonly IEts2TelemetryApiClient client;
 
         private readonly int workerInterval;
-        private readonly string apiKey;
-        private readonly string apiUrl;
         private readonly string memoryMapName;
 
-        public Ets2ConsoleTelemetryClient(IConfiguration config, IEts2TelemetryProvider provider, ILogger<Ets2ConsoleTelemetryClient> logger)
+        public Ets2ConsoleTelemetryWorker(IConfiguration config, IEts2TelemetryProvider provider, IEts2TelemetryApiClient client,
+            ILogger<Ets2ConsoleTelemetryWorker> logger)
         {
             this.provider = provider;
             this.logger = logger;
+            this.client = client;
+            this.client.ApiUrl = config.GetSection("API").GetValue<string>("URL");
+            this.client.ApiKey = config.GetSection("API").GetValue<string>("Key");
 
-            apiUrl = config.GetSection("API").GetValue<string>("URL");
-            apiKey = config.GetSection("API").GetValue<string>("Key");
             workerInterval = config.GetSection("Worker").GetValue<int>("Interval");
             memoryMapName = config.GetSection("TelemetrySdk").GetValue<string>("MemoryMapName");
-        }
-
-        public async Task SendData(Ets2Telemetry data)
-        {
-            var request = WebRequest.Create(apiUrl);
-            request.ContentType = "application/json";
-            request.Method = "POST";
-            request.Headers["Authorization"] = "Bearer " + apiKey;
-
-            using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-            {
-                var json = JsonConvert.SerializeObject(data);
-
-                streamWriter.Write(json);
-            }
-
-            var response = await request.GetResponseAsync();
-            using (var streamReader = new StreamReader(response.GetResponseStream()))
-            {
-                var responseText = streamReader.ReadToEnd();
-                logger.LogInformation("Response: {0}", responseText);
-            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -75,7 +51,7 @@ namespace Ets2Client.Console
                     
                     logger.LogInformation("Sending Telemetry Data.");
 
-                    await SendData(data);
+                    await client.SendData(data);
 
                     logger.LogInformation("Telemetry Data Send.");
 
