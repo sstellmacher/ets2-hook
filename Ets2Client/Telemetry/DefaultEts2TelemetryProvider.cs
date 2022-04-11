@@ -1,44 +1,39 @@
 ﻿using Ets2SdkClient;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
+using System;
 
 namespace Ets2Client.Telemetry
 {
     public class DefaultEts2TelemetryProvider : IEts2TelemetryProvider
     {
-        private readonly Ets2SdkTelemetry telemetry = new Ets2SdkTelemetry();
+        private readonly SharedMemory sharedMemory = new SharedMemory();
         private readonly ILogger<DefaultEts2TelemetryProvider> logger;
-
-        private Ets2Telemetry telemetryData;
-        private bool newTimestamp = false;
 
         public DefaultEts2TelemetryProvider(ILogger<DefaultEts2TelemetryProvider> logger)
         {
             this.logger = logger;
-            telemetry.Data += Telemetry_Data;
         }
 
-        private void Telemetry_Data(Ets2Telemetry telemetryData, bool newTimestamp)
+        public bool Connect(string mapName)
         {
-            this.telemetryData = telemetryData;
-            this.newTimestamp = newTimestamp;
+            return sharedMemory.Connect(mapName);
         }
 
-        public async Task<Ets2Telemetry> GetTelemetryInfoAsync()
+        public Ets2Telemetry GetTelemetry()
         {
-            if (telemetry.Error != null)
-                throw telemetry.Error;
+            if (!sharedMemory.Connected)
+                throw new InvalidOperationException(nameof(SharedMemory) + " not connected.");
 
-            logger.LogInformation("Waiting for new data...");
-            while (!newTimestamp)
-            {
-                await Task.Yield();
-            }
+            var rawData = sharedMemory.ReadRawData();
+            var etsRaw = sharedMemory.ToObject<Ets2TelemetryData>(rawData);
 
-            newTimestamp = false;
-            logger.LogInformation("Data received.");
+            return ConvertToTelemetry(etsRaw);
+        }
 
-            return telemetryData;
+        private Ets2Telemetry ConvertToTelemetry(Ets2TelemetryData etsRaw)
+        {
+            // todo
+            throw new NotImplementedException();
         }
     }
 }
